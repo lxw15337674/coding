@@ -1,4 +1,4 @@
-// 一段时间内只能执行一次
+//节流 一段时间内只能执行一次
 function throttle(fn, delay) {
   let timer = null
   return (...args) => {
