@@ -98,3 +98,10 @@ console.log("script end");
 // promise1
 // promise2
 // setTimeout
+
+
+
+
+
+
+
