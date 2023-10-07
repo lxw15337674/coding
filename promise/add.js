@@ -25,21 +25,22 @@ class Scheduler {
   //   })
   // }
 
-  // async 
-  async add(task) {
-    if (this.count >= 2) {
-      await new Promise((res) => {
-        this.runQueue.push(res)
-      })
-    }
-    this.count++
-    const res = await task()
-    this.count--
-    if (this.runQueue.length) {
-      this.runQueue.shift()()
-    }
-    return res
-  }
+  // async
+  // async add(task) {
+  //   if (this.count >= 2) {
+  //     await new Promise((res) => {
+  //       this.runQueue.push(res)
+  //     })
+  //   }
+  //   this.count++
+  //   const res = await task()
+  //   this.count--
+  //   if (this.runQueue.length) {
+  //     this.runQueue.shift()()
+  //   }
+  //   return res
+  // }
+
 }
 
 
