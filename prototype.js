@@ -7,3 +7,9 @@ function F() {
 F.prototype.b = 3;
 F.prototype.c = 4;
 var o = new F(); // {a: 1, b: 2}
+
+
+
+console.log(Function.__proto__ === Function.prototype);
+console.log(Object.__proto__ === Function.prototype);
+console.log(Function.prototype.__proto__ === Object.prototype);

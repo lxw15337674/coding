@@ -24,27 +24,27 @@
 
 
 
-const first = () => (new Promise((resolve, reject) => {
-  console.log(3);
-  let p = new Promise((resolve, reject) => {
-    console.log(7);
-    setTimeout(() => {
-      console.log(5);
-      resolve(6);
-    }, 0)
-    resolve(1);
-  });
-  resolve(2);
-  p.then((arg) => {
-    console.log(arg);
-  });
+// const first = () => (new Promise((resolve, reject) => {
+//   console.log(3);
+//   let p = new Promise((resolve, reject) => {
+//     console.log(7);
+//     setTimeout(() => {
+//       console.log(5);
+//       resolve(6);
+//     }, 0)
+//     resolve(1);
+//   });
+//   resolve(2);
+//   p.then((arg) => {
+//     console.log(arg);
+//   });
 
-}));
+// }));
 
-first().then((arg) => {
-  console.log(arg);
-});
-console.log(4);
+// first().then((arg) => {
+//   console.log(arg);
+// });
+// console.log(4);
 
 // 3
 // 7
@@ -64,3 +64,37 @@ console.log(4);
 // 先执行宏任务里面的，也就是 setTimeout 的回调，输出【5】。
 // resolve(6) 不会生效，因为 p 这个 Promise 的状态一旦改变就不会在改变了。
 
+
+console.log("script start");
+async function async1() {
+  await async2(); // await 隐式返回promise
+  console.log("async1 end"); // 这里的执行时机：在执行微任务时执行
+}
+async function async2() {
+  console.log("async2 end"); // 这里是同步代码
+}
+async1();
+setTimeout(function () {
+  console.log("setTimeout");
+}, 0);
+new Promise(resolve => {
+  console.log("Promise"); // 这里是同步代码
+  resolve();
+})
+  .then(function () {
+    console.log("promise1");
+  })
+  .then(function () {
+    console.log("promise2");
+  });
+console.log("script end");
+
+
+// script start
+// async2 end
+// Promise
+// "script end"
+// async1 end
+// promise1
+// promise2
+// setTimeout
