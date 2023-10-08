@@ -21,11 +21,11 @@ function double(num) {
 
 // 改成同步
 
-async function test1() {
-  const nums = [1, 2, 3];
-  for (let x of nums) {
-    const res = await double(x)
-    console.log(res);
-  }
-}
-test1();
+// async function test1() {
+//   const nums = [1, 2, 3];
+//   for (let x of nums) {
+//     const res = await double(x)
+//     console.log(res);
+//   }
+// }
+// test1();
