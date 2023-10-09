@@ -109,8 +109,7 @@ let currentRoot = null
 // 如果旧的 fiber 元素 和新元素具有相同的类型，那么再进一步进行比较 他们的 属性
 // 如果类型不同，并且有一个新元素，则需要创建一个新的DOM节点
 // 如果类型不同，并且有一个旧 fiber 元素，则移除旧的节点
-// 这里React也
-使用 key 进行比较。例如，它检测到子元素在元素数组中的位置发生了变化。
+// 这里React也使用 key 进行比较。例如，它检测到子元素在元素数组中的位置发生了变化。
 function reconcileChildren(wipFiber, elements) {
   let index = 0
   let oldFiber =
