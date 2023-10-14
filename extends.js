@@ -42,7 +42,7 @@ Superman.prototype.fly = (height) => {
   console.log(`fly ${height}`)
 }
 
-
 let a = new Superman(1, 2, 3)
 a.fly(22)
 a.say('123')
+
