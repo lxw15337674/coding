@@ -26,18 +26,34 @@
 
 
 
-const fn = () => {
-  this.name = 'global';
-  let obj = {
-    name: 'obj',
-    dose: function () {
-      this.name = 'dose';
-      return function () {
-        return this.name;
-      }
-    }
+// const fn = () => {
+//   this.name = 'global';
+//   let obj = {
+//     name: 'obj',
+//     dose: function () {
+//       this.name = 'dose';
+//       return function () {
+//         return this.name;
+//       }
+//     }
+//   }
+//   console.log(obj.dose().call(this))
+// }
+
+// fn()
+
+
+
+var scope = "global scope";
+function checkscope() {
+  var scope = "local scope";
+  function f() {
+    return scope;
   }
-  console.log(obj.dose().call(this))
+  return f;
 }
 
-fn()
+var foo = checkscope();
+console.log(foo())
+
+
