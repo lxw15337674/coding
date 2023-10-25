@@ -9,29 +9,27 @@
  * }
  */
 function compose(...middlewares) {
-  return (defaultValue) => {
-    let res = defaultValue
-    let i = 0
-    const next = (v) => {
-      res = v
-      if (i < middlewares.length) {
-        i++
-        middlewares[i](res, next)
+  return async (defaultValue) => {
+    let index = 0
+    const next = async (value) => {
+      if (index >= middlewares.length) {
+        return value
       }
+      await middlewares[index++](value, next)
     }
-    middlewares[0](res, next)
+    return next(defaultValue)
   }
 }
 
-function add1(x, next) {
+async function add1(x, next) {
   console.log('add1 before');
-  next(x + 1);
+  await next(x + 1);
   console.log('add1 after');
 }
 
-function add2(x, next) {
+async function add2(x, next) {
   console.log('add2 before');
-  next(x + 2);
+  await next(x + 2);
   console.log('add2 after');
 }
 

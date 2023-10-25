@@ -18,17 +18,13 @@ const m3 = async next => {
 const middlewares = [m1, m2, m3];
 
 function useApp() {
-  const next = () => {
-    const mid = middlewares.shift()
-    if (mid) {
-      return Promise.resolve(
-        mid(next)
-      )
-    } else {
-      return Promise.resolve('end')
+  const next = async (index) => {
+    if (index < middlewares.length) {
+      const middle = middlewares[index]
+      await middle(() => next(index + 1))
     }
   }
-  next()
+  next(0)
 }
 // 启动中间件
 useApp();
