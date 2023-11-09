@@ -1,6 +1,4 @@
 // 如何实现一个Event
-
-
 class EventEmitter {
   constructor() {
     this.eventBus = this.eventBus || {}

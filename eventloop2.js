@@ -1,31 +1,30 @@
-(() => {
-  setTimeout(() => {
-    console.log("1-1");
-    Promise.resolve().then(() => {
-      console.log("1-2");
-    });
-  });
-  console.log("2-1");
-  Promise.resolve().then(() => {
-    console.log("3-1");
+const first = () => (new Promise((resolve, reject) => {
+  console.log(3);
+  let p = new Promise((resolve, reject) => {
+    console.log(7);
     setTimeout(() => {
-      console.log("3-2");
-    });
+      console.log(5);
+      // promise执行一次后，不会再执行
+      resolve(6);
+      reject(10)
+    }, 0)
+    resolve(1);
   });
-  new Promise(function (reslove) {
-    console.log('4-1');
-    reslove();
-  }).then(function () {
-    console.log('4-2');
-  })
-})()
+  resolve(2);
+  p.then((arg) => {
+    console.log(arg);
+  });
+}));
+first().then((arg) => {
+  console.log(arg);
+}).catch(arg=>{
+  console.log(arg);
+})
+console.log(4);
 
-
-
-// 2-1
-// 4-1
-// 3-1
-// 4-2
-// 1-1
-// 1-2
-// 3-2
+// 3
+// 7
+// 4
+// 1
+// 2
+// 5
