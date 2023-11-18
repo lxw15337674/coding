@@ -2,7 +2,6 @@
 // 使用一个新的Promise包装，执行方法如果成功就resolve，如果不成功就等待后再次执行方法直到重试次数结束。
 
 Promise.retry = async (fn, times, delay) => {
-  // promise
   // return new Promise((res, rej) => {
   //   const run = () => {
   //     fn().then((v) => {
