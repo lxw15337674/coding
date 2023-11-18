@@ -6,8 +6,7 @@ function curry(fn, ...currentArgs) {
     const argsList = [...currentArgs, ...args]
     if (argsList.length < length) {
       return curry(fn, ...argsList)
-    }
-    if (argsList.length === length) {
+    } else {
       return fn(...argsList)
     }
   }
