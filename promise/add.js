@@ -2,58 +2,41 @@
 // 根据当前请求数，如果超过限制，就使用新的 promise 来进堵塞后续的请求，把 promise 的 resolve 函数传入一个数组中，然后执行完的请求结束后之前队列最前面的resolve。
 
 class Scheduler {
+  queue = []
   count = 0
-  runQueue = []
-
-  // promise
-  // add(task) {
-  //   let res = task
-  //   if (this.count >= 2) {
-  //     res = () => new Promise((res) => {
-  //       this.runQueue.push(res)
-  //     }).then(() => {
-  //       return task()
-  //     })
-  //   }
-  //   this.count++
-  //   return res().then(() => {
-  //     if (this.runQueue.length) {
-  //       this.runQueue.shift()()
-  //     } else {
-  //       this.count--
-  //     }
-  //   })
-  // }
-
-  // async
-  // async add(task) {
-  //   if (this.count >= 2) {
-  //     await new Promise((res) => {
-  //       this.runQueue.push(res)
-  //     })
-  //   }
-  //   this.count++
-  //   const res = await task()
-  //   this.count--
-  //   if (this.runQueue.length) {
-  //     this.runQueue.shift()()
-  //   }
-  //   return res
-  // }
-
+  add(task) {
+    return new Promise((res) => {
+      if (this.count >= 2) {
+        this.queue.push(res)
+      } else {
+        this.count++
+        res()
+      }
+    }).then(() => {
+      return task().then((v) => {
+        if (this.queue.length) {
+          this.queue.shift()()
+        } else {
+          this.count--
+        }
+        return v
+      })
+    })
+  }
 }
 
 
 
-const timeout = (time) => new Promise(resolve => {
-  setTimeout(resolve, time)
+const timeout = (time, v) => new Promise(resolve => {
+  setTimeout(() => resolve(v), time)
 })
 
 const scheduler = new Scheduler()
 const addTask = (time, order) => {
-  scheduler.add(() => timeout(time))
-    .then(() => console.log(order))
+  scheduler.add(() => timeout(time, order))
+    .then((v) => console.log(v))
 }
+
 
 // 限制同一时刻只能执行2个task
 addTask(4000, '1')

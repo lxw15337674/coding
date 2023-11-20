@@ -103,4 +103,3 @@ new myPromise((resolve, reject) => {
 // result3 undefined
 
 
-

@@ -1,4 +1,4 @@
-// 实现一个promise封装函数，多次执行promise只会执行一次，后面的会等第一个执行完后返回第一次执行的值
+// 实现一个promise封装函数，类似防抖，多次执行promise只会执行一次，后面的会等第一个执行完后返回第一次执行的值
 function request() {
   let num = 0;
   return new Promise((resolve) => {

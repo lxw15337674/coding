@@ -4,51 +4,57 @@
 
 function sendWithRetry(fn, onSuccess, onCancel) {
   let delay = 100
-  let cancel = false
+  let cancel = () => { }
   let error = null
-  let timeId = null
-  new Promise((res, rej) => {
+
+  const run = () => new Promise((res, rej) => {
     cancel = () => {
-      clearTimeout(timeId)
       rej(error)
     }
-    const run = () => {
-      console.log('run')
-      fn().then(v => {
-        res(v)
-      }).catch(err => {
-        console.log('重试', delay);
-        error = err
-        timeId = setTimeout(run, delay)
+    fn().then((v) => {
+      res(v)
+    }, (err) => {
+      console.log('失败', err)
+      error = err
+      setTimeout(() => {
         delay = delay * 2
-      })
-    }
-    run()
+        run()
+      }, delay)
+    })
   }).then(v => {
     onSuccess(v)
+    return v
   }).catch(err => {
     onCancel(err)
   })
-  return cancel
+
+  return { run, cancel }
 }
 
-const cancel = sendWithRetry(
+const { run, cancel } = sendWithRetry(
   () => {
     return new Promise((resolve, reject) => {
       setTimeout(
-        () => (Math.random() > 0.8 ? resolve('成功') : reject(new Error('失败')))
-        , 100,
+        () => {
+          const num = Math.random()
+          num > 0.5 ? resolve(num) : reject(num)
+        }, 100,
       )
     })
   },
   (data) => {
-    console.log("结果：", data);
+    console.log("成功", data);
   },
   () => {
     console.log("被取消了");
   }
-);
+)
+
+run().then(v => {
+  console.log('链式调用', v);
+})
 
 setTimeout(() => {
   cancel(); // 取消、中断轮询
 }, 3000);
+
