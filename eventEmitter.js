@@ -11,9 +11,9 @@ let Publisher = {
     if (!this.map[emit]) {
       this.map[emit] = []
     }
-    // 注意这个地方
     const onceFn = () => {
       fn()
+      // 注意这个地方
       this.off(emit, onceFn)
     }
     this.map[emit].push(onceFn)
