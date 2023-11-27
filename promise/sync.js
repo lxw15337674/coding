@@ -14,7 +14,6 @@ function double(num) {
 //   })
 // }
 // test1();
-
 //   2,
 //   4,
 //   6,
