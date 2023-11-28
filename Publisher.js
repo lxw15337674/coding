@@ -1,3 +1,4 @@
+// 发布订阅模式
 //注意点：在once，要删除封装后的onceFn，
 let Publisher = {
   map: {},
@@ -8,24 +9,18 @@ let Publisher = {
     this.map[emit].push(fn)
   },
   once: function (emit, fn) {
-    if (!this.map[emit]) {
-      this.map[emit] = []
-    }
     const onceFn = () => {
       fn()
-      // 注意这个地方
       this.off(emit, onceFn)
     }
-    this.map[emit].push(onceFn)
+    this.add(emit, onceFn)
   },
   off: function (emit, fn) {
     let fns = this.map[emit]
-    fns = fns.filter(callback => fn !== callback)
-    this.map[emit] = fns
+    this.map[emit] = fns.filter(callback => fn !== callback)
   },
   notify: function (emit) {
-    const fns = this.map[emit] ?? []
-    for (let fn of fns) {
+    for (let fn of this.map[emit]) {
       fn()
     }
   }
@@ -35,6 +30,7 @@ const pub = Publisher
 const log2 = () => {
   console.log('log2')
 }
+console.log('-------------------')
 pub.once('log', () => {
   console.log('onceLog1')
 })
@@ -46,8 +42,18 @@ pub.once('log', () => {
   console.log('onceLog2')
 })
 pub.notify('log')
+// 输出结果：
+// onceLog1
+// log1
+// log2
+// onceLog2
 console.log('-------------------')
 pub.notify('log')
+// 输出结果
+// log1
+// log2
 console.log('-------------------')
 pub.off('log', log2)
 pub.notify('log')
+// 输出结果
+// log1
