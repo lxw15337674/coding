@@ -1,6 +1,5 @@
 // 实现 mergePromise 函数，把传进去的数组按顺序先后执行，并且把返回的数据先后放到数组 data 中。
 
-
 const timeout = ms => new Promise((resolve, reject) => {
   setTimeout(() => {
     resolve();
@@ -23,19 +22,18 @@ const ajax3 = () => timeout(2000).then(() => {
 });
 
 const mergePromise = ajaxArray => {
-  const data = [];
+  const data = []
+  let count = 0
   return new Promise((res) => {
-    const run = (promises) => {
-      promises.shift()().then((v) => {
-        data.push(v)
-        if (promises.length) {
-          run(promises)
-        } else {
+    ajaxArray.forEach((ajax, index) => {
+      ajax().then((v) => {
+        count++
+        data[index] = v
+        if (count === ajaxArray.length) {
           res(data)
         }
       })
-    }
-    run(ajaxArray)
+    })
   })
 }
 
