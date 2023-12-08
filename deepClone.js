@@ -1,3 +1,5 @@
+// 如果是基本数据类型，则直接返回，如果是引用数据类型则循环每个item，递归复制
+// 处理循环引用，把每次创建的数据都存在map里，key为原对象，value为复制后的对象，每次复制前判断，如果存在则直接返回复制后的对象。
 function deepCopy(obj, visited = new WeakMap()) {
   if (obj === null || typeof obj !== 'object') {
     return obj;
