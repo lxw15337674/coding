@@ -9,7 +9,7 @@ const curry = (fn) => {
       return (...moreArgs) => {
         return curried(...args, ...moreArgs);
       };
-    }
+    };
   };
   return curried;
 };
