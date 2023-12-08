@@ -1,16 +1,18 @@
 // 实现 Scheduler.add() 函数
 // 根据当前请求数，如果超过限制，就使用新的 promise 来进堵塞后续的请求，把 promise 的 resolve 函数传入一个数组中，然后执行完的请求结束后之前队列最前面的resolve。
+// https://juejin.cn/post/6854573217013563405
 
+// class写法
 class Scheduler {
   queue = []
   count = 0
   add(task) {
     return new Promise((res) => {
-      if (this.count >= 2) {
-        this.queue.push(res)
-      } else {
+      if (this.count < 2) {
         this.count++
         res()
+      } else {
+        this.queue.push(res)
       }
     }).then(() => {
       return task().then((v) => {
@@ -24,7 +26,6 @@ class Scheduler {
     })
   }
 }
-
 
 
 const timeout = (time, v) => new Promise(resolve => {
@@ -47,6 +48,6 @@ addTask(3000, '4')
 //Scheduler ？
 //4秒后打印1
 //3.5秒打印2
-//3进入队列，到7.5秒打印3 
+//3进入队列，到7.5秒打印3
 //...
 
