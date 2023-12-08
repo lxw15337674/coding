@@ -2,18 +2,20 @@
 // 使用一个新的Promise包装，执行方法如果成功就resolve，如果不成功就等待后再次执行方法直到重试次数结束。
 
 Promise.retry = async (fn, times, delay) => {
+  let count = 0
   return new Promise((res, rej) => {
     const run = () => {
-      fn().then((v) => {
+      fn().then(v => {
         res(v)
       }).catch((err) => {
-        if (times === 0) {
+        if (count === times) {
           rej(err)
           return
+        } else {
+          console.log('retry')
+          count++
+          setTimeout(run, delay)
         }
-        times--
-        console.log('重试中', times);
-        setTimeout(run, delay)
       })
     }
     run()

@@ -1,11 +1,25 @@
 // 按照顺序输出，并尽可能早的输出
 // 如果需要同时执行，就先直接执行，然后再根据值输出值
+// const printInOrderPromise = (promises) => {
+//   let cachePromise = Promise.resolve();
+
+//   for (let i = 0; i < promises.length; i++) {
+//     const currentPromise = promises[i]();
+//     cachePromise = cachePromise.then(() => {
+//       return currentPromise.then(result => {
+//         console.log(result);
+//       });
+//     });
+//   }
+// }
+
 const printInOrderPromise = async (promises) => {
-  const queue = promises.map(item => item());
-  for (let i = 0; i < queue.length; i++) {
-    console.log(await queue[i]);
+  const pros = promises.map(item => item())
+  for (let pro of pros) {
+    console.log(await pro)
   }
 }
+
 
 // 第 2 秒输出 'a'
 // 立即输入 'b'

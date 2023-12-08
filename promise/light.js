@@ -27,7 +27,7 @@ function yellow() {
 //   loop()
 // }
 
-const loop = async () => {
+const loop = () => {
   Promise.resolve().then(function () {
     return light(red, 3000);
   }).then(function () {
